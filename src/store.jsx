@@ -1,42 +1,22 @@
-import { configureStore } from "@reduxjs/toolkit";
-
-//Define Action Types: stateDomain & Event
-const ADD_TASK = "task/add";
-const DELETE_TASK = "task/delete";
-const FETCH_TASK = "task/fetch";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   task: [],
 };
 
-// step 1: create simple reducer function
-const taskReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_TASK:
-      return {
-        ...state,
-        task: [...state.task, action.payload],
-      };
+// step 1: create slicre using RTK
+const taskReducer = createSlice({
+  name: "task",
+  initialState,
+  reducers: {
+    addTask(state, action) {},
+    deleteTask(state, action) {},
+  },
+});
 
-    case DELETE_TASK:
-      const updatedTask = state.task.filter((item, index) => {
-        return index !== action.payload;
-      });
-      return {
-        ...state,
-        task: updatedTask,
-      };
-
-    case FETCH_TASK:
-      return { ...state, task: [...state.task, ...action.payload] };
-
-    default:
-      return state;
-  }
-};
+const { addTask, deleteTask } = taskReducer.actions;
 
 //! Using RTK step: 2 configure store
-
 export const store = configureStore({
   reducer: {
     taskReducer,
@@ -45,36 +25,7 @@ export const store = configureStore({
 
 //step 3: Log the initial state
 // The getState method is synchronous function that returns the current state of redux application. It include the entire state of the application, including akk the reducers and their respective state.
-
 console.log("initial state:", store.getState());
-
-// step 5: create action creators
-
-export const addTask = (data) => {
-  return { type: ADD_TASK, payload: data };
-};
-
-export const deleteTask = (data) => {
-  return { type: DELETE_TASK, payload: data };
-};
-
-export const fetchTask = () => {
-  return async (dispatch) => {
-    try {
-      const res = await fetch(
-        "https://jsonplaceholder.typicode.com/todos?_limit=3"
-      );
-
-      const task = await res.json();
-      dispatch({
-        type: FETCH_TASK,
-        payload: task.map((curTask) => curTask.title),
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
 
 //step 4: Dispatch action to add task
 store.dispatch(addTask("Buy Apple"));
