@@ -1,6 +1,4 @@
-import { createStore, applyMiddleware } from "redux";
-import { composeWithDevTools } from "@redux-devtools/extension";
-import {thunk} from "redux-thunk";
+import { configureStore } from "@reduxjs/toolkit";
 
 //Define Action Types: stateDomain & Event
 const ADD_TASK = "task/add";
@@ -37,11 +35,13 @@ const taskReducer = (state = initialState, action) => {
   }
 };
 
-// step 2: create the redux store using the reducer
-export const store = createStore(
-  taskReducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
+//! Using RTK step: 2 configure store
+
+export const store = configureStore({
+  reducer: {
+    taskReducer,
+  },
+});
 
 //step 3: Log the initial state
 // The getState method is synchronous function that returns the current state of redux application. It include the entire state of the application, including akk the reducers and their respective state.
@@ -66,7 +66,10 @@ export const fetchTask = () => {
       );
 
       const task = await res.json();
-      dispatch({ type: FETCH_TASK, payload: task.map((curTask) => curTask.title) });
+      dispatch({
+        type: FETCH_TASK,
+        payload: task.map((curTask) => curTask.title),
+      });
     } catch (error) {
       console.log(error);
     }

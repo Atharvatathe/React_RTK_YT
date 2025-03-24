@@ -6,7 +6,7 @@ import { addTask, deleteTask, fetchTask } from "../store";
 export const Todo = () => {
   const [task, setTask] = useState("");
 
-  const tasks = useSelector((state) => state.task); // using useSelector hook we can access data from store
+  const tasks = useSelector((state) => state.taskReducer.task); // using useSelector hook we can access data from store
 
   const dispatch = useDispatch();
 
@@ -22,7 +22,7 @@ export const Todo = () => {
 
   const handleFetchTask = () => {
     //Fetch task from API
-   return dispatch(fetchTask())
+    return dispatch(fetchTask());
   };
 
   return (
