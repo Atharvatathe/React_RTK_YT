@@ -42,7 +42,7 @@ export const Todo = () => {
         {/* <button onClick={handleFetchTask}>Fetch Task</button> */}
 
         <ul id="list-container">
-          {tasks.map((curentTask, index) => {
+          {tasks?.map((curentTask, index) => {
             return (
               <li key={index}>
                 <p>
