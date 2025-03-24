@@ -9,17 +9,21 @@ const taskReducer = createSlice({
   name: "task",
   initialState,
   reducers: {
-    addTask(state, action) {},
-    deleteTask(state, action) {},
+    addTask(state, action) {
+      state.task.push(action.payload);
+    },
+    deleteTask(state, action) {
+      state.task = state.task.filter((item, index) => index !== action.payload);
+    },
   },
 });
 
-const { addTask, deleteTask } = taskReducer.actions;
+export const { addTask, deleteTask } = taskReducer.actions;
 
 //! Using RTK step: 2 configure store
 export const store = configureStore({
   reducer: {
-    taskReducer,
+    taskReducer: taskReducer.reducer,
   },
 });
 
